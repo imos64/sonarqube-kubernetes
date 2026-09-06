@@ -1,0 +1,6 @@
+{
+  "name": "sonarqube",
+  "repository": "sonarqube-kubernetes",
+  "namespace": "sonarqube",
+  "operator": false
+}

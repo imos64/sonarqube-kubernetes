@@ -1,0 +1,4 @@
+kube_context = "production-cluster"
+namespace = "sonarqube"
+# Absolute path to your storage, hostname, SSO and integration overrides.
+values_files = ["/absolute/path/to/production-overrides.yaml"]

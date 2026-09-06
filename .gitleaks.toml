@@ -1,0 +1,7 @@
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Helm SHA-256 rollout annotations are content hashes, not credentials"
+regexTarget = "line"
+regexes = ['''^\s+checksum/[a-z-]+: [a-f0-9]{64}$''']

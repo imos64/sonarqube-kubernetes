@@ -1,0 +1,14 @@
+apiVersion: v2
+name: sonarqube-kubernetes
+description: sonarqube Kubernetes deployment maintained by imos64
+type: application
+version: 1.0.0
+home: https://github.com/imos64/sonarqube-kubernetes
+maintainers:
+- name: imos64
+  url: https://github.com/imos64
+dependencies:
+- name: sonarqube
+  alias: app
+  version: 2026.4.1
+  repository: https://SonarSource.github.io/helm-chart-sonarqube

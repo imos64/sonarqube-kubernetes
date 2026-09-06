@@ -1,0 +1,15 @@
+**/.terraform/
+*.tfstate*
+*.tfplan
+*.tfvars
+!*.tfvars.example
+.env
+.env.*
+!*.example
+secrets/
+*.pem
+*.key
+__pycache__/
+.validation/
+.tools/
+.venv/

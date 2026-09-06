@@ -1,0 +1,26 @@
+app:
+  fullnameOverride: sonarqube
+  community:
+    enabled: true
+  jdbcOverwrite:
+    enabled: true
+    jdbcUrl: jdbc:postgresql://postgresql-rw.postgresql.svc.cluster.local:5432/sonarqube
+    jdbcUsername: sonarqube
+    jdbcSecretName: sonarqube-jdbc
+    jdbcSecretPasswordKey: password
+  monitoringPasscodeSecretName: sonarqube-monitoring
+  monitoringPasscodeSecretKey: passcode
+  persistence:
+    enabled: true
+    size: 10Gi
+  initSysctl:
+    enabled: false
+  initFs:
+    enabled: false
+  resources:
+    requests:
+      cpu: 500m
+      memory: 2Gi
+    limits:
+      cpu: '2'
+      memory: 4Gi
