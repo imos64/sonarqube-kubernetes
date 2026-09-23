@@ -24,3 +24,5 @@ app:
     limits:
       cpu: '2'
       memory: 4Gi
+workloadNetworkPolicy:
+  enabled: true
