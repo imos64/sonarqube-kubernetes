@@ -39,10 +39,14 @@ def main():
                    input=statement.encode()).decode().strip()
 
     def wait_ready(container):
+        accepted = 0
         for _ in range(60):
-            result = subprocess.run(["docker", "exec", container, "pg_isready", "-U", "postgres"],
+            # The official entry point starts a temporary Unix-socket server for
+            # bootstrap, then stops it. Require the final TCP listener instead.
+            result = subprocess.run(["docker", "exec", container, "pg_isready", "-h", "127.0.0.1", "-U", "postgres"],
                                     capture_output=True)
-            if result.returncode == 0:
+            accepted = accepted + 1 if result.returncode == 0 else 0
+            if accepted == 3:
                 return
             time.sleep(1)
         raise RuntimeError("PostgreSQL readiness timeout")
