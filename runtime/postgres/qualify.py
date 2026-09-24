@@ -19,6 +19,11 @@ def run(args, **kwargs):
     return subprocess.run(args, check=True, capture_output=True, **kwargs).stdout
 
 
+def require(condition, message):
+    if not condition:
+        raise RuntimeError(message)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--image", required=True)
@@ -82,10 +87,11 @@ def main():
             bad = subprocess.run(["docker", "exec", "-e", "PGPASSWORD=deliberately-wrong", source,
                                   "psql", "-h", "127.0.0.1", "-U", "postgres", "-Atc", "SELECT 1"],
                                  capture_output=True)
-            assert bad.returncode != 0 and b"password authentication failed" in bad.stderr
+            require(bad.returncode != 0 and b"password authentication failed" in bad.stderr,
+                    "wrong password was not rejected")
             good = run(["docker", "exec", source, "sh", "-c",
                         'PGPASSWORD="$POSTGRES_PASSWORD" psql -h 127.0.0.1 -U postgres -Atc "SELECT 1"'])
-            assert good.strip() == b"1"
+            require(good.strip() == b"1", "valid password was not accepted")
             receipt["checks"]["password_authentication"] = True
             sql(source, "CREATE TABLE sample(id integer PRIMARY KEY, body text NOT NULL); "
                 "INSERT INTO sample SELECT i, repeat(md5(i::text),32) FROM generate_series(1,10000) i;",
@@ -94,13 +100,13 @@ def main():
             before = sql(source, query, "qualification")
             run(["docker", "restart", source])
             wait_ready(source)
-            assert sql(source, query, "qualification") == before
+            require(sql(source, query, "qualification") == before, "restart changed fixture data")
             receipt["checks"]["persistence_after_restart"] = True
             dump = run(["docker", "exec", source, "pg_dump", "-U", "postgres", "-Fc", "qualification"])
             (args.output / "fixture.dump").write_bytes(dump)
             run(["docker", "exec", "-i", restored, "pg_restore", "-U", "postgres", "--exit-on-error",
                  "--no-owner", "--dbname=qualification"], input=dump)
-            assert sql(restored, query, "qualification") == before
+            require(sql(restored, query, "qualification") == before, "restored fixture data differs")
             receipt["checks"]["restore_to_separate_container_and_volume"] = True
             receipt["rows_and_content_fingerprint"] = before
             receipt["backup_sha256"] = hashlib.sha256(dump).hexdigest()
