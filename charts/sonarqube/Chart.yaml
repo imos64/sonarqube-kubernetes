@@ -2,7 +2,7 @@ apiVersion: v2
 name: sonarqube-kubernetes
 description: sonarqube Kubernetes deployment maintained by imos64
 type: application
-version: 1.0.0
+version: 1.0.1
 home: https://github.com/imos64/sonarqube-kubernetes
 maintainers:
 - name: imos64
