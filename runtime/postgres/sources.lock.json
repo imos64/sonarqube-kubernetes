@@ -1,0 +1,7 @@
+{
+  "postgres_base": "docker.io/library/postgres:17.11-alpine3.24@sha256:b0f9560a2de083e2cc7382e75f808c7381a32852a7ec49117deedb300e552b24",
+  "builder": "docker.io/library/golang:1.27.1-alpine3.24@sha256:8a5910f31396cd4d89662f56c68b3ae31d374308270a1c3bd96672ee5ed43414",
+  "gosu_repository": "https://github.com/tianon/gosu",
+  "gosu_revision": "6456aaa0f3c854d199d0f037f068eb97515b7513",
+  "gosu_archive_sha256": "cb892cf183914b349fe08cf85d758b4221f8eb9f9b821c2c9c2aca35ff052011"
+}
